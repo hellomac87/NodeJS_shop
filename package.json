@@ -1,0 +1,22 @@
+{
+  "name": "nodejs_shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ hellomac87/NodeJS_shop.git"
+  },
+  "author": "hellomac87",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hellomac87/NodeJS_shop/issues"
+  },
+  "homepage": "https://github.com/hellomac87/NodeJS_shop#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
