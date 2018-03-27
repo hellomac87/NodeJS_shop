@@ -18,6 +18,7 @@ var connect = mongoose.connect('mongodb://127.0.0.1:27017/fastcampus',
 autoIncrement.initialize(connect);
 
 var admin = require('./routes/admin');
+var contacts = require('./routes/contacts');
 var app = express();
 var port = 3000;
 
@@ -35,6 +36,7 @@ app.get('/', function (req, res) {
 }); 
 
 app.use('/admin', admin); //middleware
+app.use('/contacts', contacts);
 
 app.listen( port, function(){
     console.log('Express listening on port', port);
