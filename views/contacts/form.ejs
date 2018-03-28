@@ -1,3 +1,19 @@
 <% include ../header%>
-    <h1>form</h1>
+    <form action="" method="post">
+        <table class="table table-bordered">
+            <tr>
+                <th>제목</th>
+                <td><input type="text" name="title" class="form-control" value=""/></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td><input type="email" name="email" class="form-control" value=""/></td>
+            </tr>
+            <tr>
+                <th>설명</th>
+                <td><input type="text" name="description" class="form-control" value=""/></td>
+            </tr>
+        </table>
+        <button class="btn btn-primary">작성하기</button>
+    </form>
 <% include ../footer%>
