@@ -3,11 +3,27 @@ var router = express.Router();
 var ProductsModel = require('../models/ProductsModel');
 var CommentsModel = require('../models/CommentsModel');
 
+/*
+//미들웨어 개념
+function testMiddleWare( req, res, next){
+    console.log('testMiddleWare on!')
+    next();
+}
+function adminCheck( req, res, next){
+    console.log('adminCheck on!')
+    next();
+}
+router.get('/products', testMiddleWare, adminCheck,function(req, res){
+    ProductsModel.find(function(err, products){
+        res.render('admin/products',{products : products});
+    });
+});
+*/
 router.get('/', function(req, res){
     res.send('path : admin');
 });
 
-router.get('/products', function(req, res){
+router.get('/products',function(req, res){
     ProductsModel.find(function(err, products){
         res.render('admin/products',{products : products});
     });
@@ -21,9 +37,14 @@ router.post('/products/write', function(req, res){
         price : req.body.price,
         description : req.body.description
     });
-    product.save(function(err){
-        res.redirect('/admin/products');
-    });
+    
+    if(!product.validateSync()){
+        product.save(function(err){
+            res.redirect('/admin/products');
+        });    
+    }else{
+        res.send(product.validateSync());
+    }
 });
 
 router.get('/products/detail/:id', function(req, res){

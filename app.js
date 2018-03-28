@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
 //MongoDB 접속
 var mongoose = require('mongoose');
@@ -26,10 +27,11 @@ var port = 3000;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// 미들웨어 셋팅 (라우팅 전 세팅)
+// 미들웨어 셋팅 (라우팅 전 세팅 : ex)req변수를 사용하기 위해 라우팅 전에 세팅해야함
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.get('/', function (req, res) {
   res.send('ROOT page');
