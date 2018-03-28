@@ -8,6 +8,7 @@ var ProductsSchema = new Schema({
         type:String,
         required:[true, '제목은 필수 필드입니다.']
     }, //제품명
+    thumbnail:String, //thumnail 이미지 파ㅣ일명
     price:Number, //가격
     description:String, //설명
     created_at:{ //작성일 자동

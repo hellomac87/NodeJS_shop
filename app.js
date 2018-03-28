@@ -20,6 +20,7 @@ autoIncrement.initialize(connect);
 
 var admin = require('./routes/admin');
 var contacts = require('./routes/contacts');
+var accounts = require('./routes/accounts');
 var app = express();
 var port = 3000;
 
@@ -33,12 +34,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+//업로드 path 추가(static path add)
+app.use('/uploads', express.static('uploads'));
+
 app.get('/', function (req, res) {
   res.send('ROOT page');
 }); 
 
 app.use('/admin', admin); //middleware
 app.use('/contacts', contacts);
+app.use('/accounts', accounts);
 
 app.listen( port, function(){
     console.log('Express listening on port', port);
