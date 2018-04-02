@@ -27,6 +27,8 @@ autoIncrement.initialize(connect);
 var admin = require('./routes/admin');
 var contacts = require('./routes/contacts');
 var accounts = require('./routes/accounts');
+var auth = require('./routes/auth');
+
 var app = express();
 var port = 3000;
 
@@ -64,9 +66,11 @@ app.get('/', function (req, res) {
   res.send('ROOT page');
 }); 
 
+//Router use
 app.use('/admin', admin); //middleware
 app.use('/contacts', contacts);
 app.use('/accounts', accounts);
+app.use('/auth', auth);
 
 app.listen( port, function(){
     console.log('Express listening on port', port);
