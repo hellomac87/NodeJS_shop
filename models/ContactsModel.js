@@ -4,9 +4,18 @@ var autoIncrement = require('mongoose-auto-increment');
 
 //생성될 필드명을 정한다.
 var ContactsSchema = new Schema({
-    title:String, //제품명
-    email:String, //이메일주소
-    description:String, //설명
+    title:{ //제품명
+        type: String,
+        required:[true, '제목을 입력하세요.']
+    }, 
+    email:{ //이메일주소
+        type: String,
+        required:[true, "이메일 주소를 입력해 주세요"]
+    }, 
+    description:{
+        type: String,
+        required:[true, '내용을 입력해 주세요']
+    }, //설명
     created_at:{ //작성일 자동
         type: Date,
         default: Date.now()

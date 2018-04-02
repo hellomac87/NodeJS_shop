@@ -21,9 +21,17 @@ router.post('/write', function(req, res){
         email:req.body.email, 
         description:req.body.description
     });
-    contacts.save(function(err){
-        res.redirect('/contacts')
-    });
+
+    var validationError = contacts.validateSync();
+
+    if(!validationError){
+        contacts.save(function(err){
+            res.redirect('/contacts')
+        });
+    }else{
+        res.send(validationError.message);
+    }
+
 });
 
 //contacts/detail/:id 상세글보기
@@ -52,9 +60,10 @@ router.post('/edit/:id', function(req, res){
         email:req.body.email, 
         description:req.body.description
     }
+
     ContactsModel.update({ id : req.params.id}, { $set : query },function(err){
         res.redirect('/contacts')
-    });
+    });   
 });
 
 //contacts/delete/:id 글삭제하기
@@ -66,9 +75,15 @@ router.get('/delete/:id', function(req, res){
         res.redirect('/contacts');
     });
 });
+
+
+//댓글 포스트 받기
 /*
-URL
-
+router.post('/ajax_comment/insert', function(req, res){
+    var comment = new CommentsModel({
+        content:req.body.content,
+        product_id : parseInt(req.body.product_id)
+    });
+});
 */
-
 module.exports = router;
