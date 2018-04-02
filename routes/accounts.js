@@ -13,11 +13,14 @@ passport.serializeUser(function (user, done) {
 });
  
 passport.deserializeUser(function (user, done) {
+    //이 시점에서 user가 req에 담김
+    var result = user;
+    result.password = ''; //passowrd 지우기
     console.log('deserializeUser');
-    done(null, user);
+    done(null, result); 
 });
 
-//passport 정책 작성
+//passport LocalStrategy 정책 작성
 passport.use(new LocalStrategy({
         usernameField:'username',
         passwordField:'password',
