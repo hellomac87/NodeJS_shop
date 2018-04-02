@@ -7,11 +7,12 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 //passport serializeUser, deserializeUser
-passport.serializeUser(function(user, done){
-    console.log(serializeUser);
+passport.serializeUser(function (user, done) {
+    console.log('serializeUser');
     done(null, user);
 });
-passport.deserializeUser(function(user, done){
+ 
+passport.deserializeUser(function (user, done) {
     console.log('deserializeUser');
     done(null, user);
 });
@@ -40,11 +41,8 @@ passport.use(new LocalStrategy({
 router.get('/', function(req, res){
     res.render('accounts/login');
 });
-router.get('/login', function(req, res){
-    res.render('accounts/login');
-})
 
-//회원가입
+// Router 회원가입
 router.get('/join', function(req, res){
     res.render('accounts/join');
 });
@@ -62,5 +60,30 @@ router.post('/join', function(req, res){
     })
 });
 
+// Router 로그인
+router.get('/login', function(req, res){
+    res.render('accounts/login', { flashMessage : req.flash().error });
+})
+
+router.post('/login',
+    passport.authenticate('local', { //passport 미들웨어 추가
+        failureRedirect:'/accounts/login', //실패시 리다이렉트
+        failureFlash:true //실패시 플래시 메세지
+    }),
+    function(req, res){
+        res.send('<script>alert("로그인 성공");\
+        location.href="/accounts/success";</script>');
+    }
+);
+
+router.get('/success', function(req, res){
+    res.send(req.user);
+});
+ 
+ 
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/accounts/login');
+});
 
 module.exports = router;
