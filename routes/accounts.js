@@ -75,7 +75,7 @@ router.post('/login',
     }),
     function(req, res){
         res.send('<script>alert("로그인 성공");\
-        location.href="/accounts/success";</script>');
+        location.href="/";</script>');
     }
 );
 

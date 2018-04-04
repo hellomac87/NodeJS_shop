@@ -3,6 +3,8 @@ var router = express.Router();
 var ProductsModel = require('../models/ProductsModel');
 var CommentsModel = require('../models/CommentsModel');
 
+var loginRequired = require('../libs/loginRequired');
+
 // csrf 셋팅
 var csrf = require('csurf');
 var csrfProtection = csrf({ cookie: true });
@@ -49,17 +51,18 @@ router.get('/products',function(req, res){
         res.render('admin/products',{products : products});
     });
 });
-router.get('/products/write', csrfProtection, function(req, res){
+router.get('/products/write', loginRequired, csrfProtection, function(req, res){
     res.render('admin/form',{ product : "", csrfToken : req.csrfToken()});
 });
-router.post('/products/write', upload.single('thumbnail'), csrfProtection, function(req, res){
+router.post('/products/write', loginRequired, upload.single('thumbnail'), csrfProtection, function(req, res){
     //console.log(req.file);
     var product = new ProductsModel({
         name : req.body.name,
         thumbnail : (req.file) ? req.file.filename : "",
         //thumbnail : (req.file)이 ? 있으면 얘로저장 req.file.filename : 없으면 얘로저장 "",(삼항연산자)
         price : req.body.price,
-        description : req.body.description
+        description : req.body.description,
+        username : req.user.username
     });
     
     if(!product.validateSync()){
@@ -81,12 +84,12 @@ router.get('/products/detail/:id', function(req, res){
 });
 
 //edit
-router.get('/products/edit/:id', csrfProtection , function(req, res){
+router.get('/products/edit/:id', loginRequired, csrfProtection , function(req, res){
     ProductsModel.findOne({'id':req.params.id}, function(err, product){
         res.render('admin/form', { product : product, csrfToken : req.csrfToken()});
     });
 });
-router.post('/products/edit/:id', upload.single('thumbnail'), csrfProtection, function(req, res){
+router.post('/products/edit/:id', loginRequired, upload.single('thumbnail'), csrfProtection, function(req, res){
     //그전에 지정되 있는 파일명을 받아온다
     ProductsModel.findOne( {id : req.params.id} , function(err, product){
 
