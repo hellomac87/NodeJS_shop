@@ -29,6 +29,7 @@ var admin = require('./routes/admin');
 var contacts = require('./routes/contacts');
 var accounts = require('./routes/accounts');
 var auth = require('./routes/auth');
+var github = require('./routes/github');
 var chat = require('./routes/chat');
 
 var app = express();
@@ -80,6 +81,7 @@ app.use('/admin', admin); //middleware
 app.use('/contacts', contacts);
 app.use('/accounts', accounts);
 app.use('/auth', auth);
+app.use('/github', github);
 app.use('/chat', chat);
 
 
