@@ -19,7 +19,7 @@ passport.use(new GitHubStrategy({
   },
   function(accessToken, refreshToken, profile, cb) {
       
-     UserModel.findOne({ githubId: 'gh_' + profile.id }, function (err, user) {
+     UserModel.findOne({ 'username': 'gh_' + profile.id }, function (err, user) {
         if(!user){
             var regData = {
                 username : "gh_" + profile.id,
