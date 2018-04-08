@@ -5,6 +5,7 @@ var passwordHash = require('../libs/passwordHash');
 //passport
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var loginRequired = require('../libs/loginRequired');
 
 //passport serializeUser, deserializeUser
 passport.serializeUser(function (user, done) {
@@ -87,6 +88,13 @@ router.get('/success', function(req, res){
 router.get('/logout', function(req, res){
     req.logout();
     res.redirect('/accounts/login');
+});
+
+//my profile
+router.get('/profile', loginRequired, function(req, res){
+    
+    res.render('accounts/profile', {user:req.user});
+    
 });
 
 module.exports = router;
