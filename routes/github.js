@@ -18,15 +18,24 @@ passport.use(new GitHubStrategy({
     callbackURL: "http://127.0.0.1:3000/github/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-      /*
-      console.log('accessToken : ', accessToken);
-      console.log('refreshToken : ', refreshToken);
-      console.log('profile : ', profile);
-      console.log('cb : ', cb);
-      */
-    
+      
      UserModel.findOne({ githubId: 'gh_' + profile.id }, function (err, user) {
-        return cb(err, user);
+        if(!user){
+            var regData = {
+                username : "gh_" + profile.id,
+                password: "github_login",
+                displayName : profile.displayName
+            };
+            var User = new UserModel(regData);
+            User.save(function(err){
+                //done(null, regData);
+                return cb(err, regData);
+            });
+        }else{
+            //done(null, user);
+            return cb(err, user);
+        }
+        
     });
     
   }
@@ -36,11 +45,13 @@ router.get('/',
   passport.authenticate('github'));
 
 router.get('/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.send(req.user);
-  });
+  passport.authenticate('github',
+        { 
+            successRedirect: '/',
+            failureRedirect: '/accounts/login'
+        }
+    )
+);
 
 
 module.exports = router;
