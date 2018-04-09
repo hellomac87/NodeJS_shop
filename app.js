@@ -100,8 +100,11 @@ var server = app.listen( port, function(){
  
 var listen = require('socket.io');
 var io = listen(server);
+//socket io passport 접근하기 위한 미들웨어 적용
+io.use(function(socket, next){
+  sessionMiddleWare(socket.request, socket.request.res, next); //socket 에 request객체를 전달할 수 있도록 한다
+});
 require('./libs/socketConnection')(io);
-
 
 // 8443번에 https적용 -------------
 // var https = require('https');
