@@ -91,16 +91,7 @@ var server = app.listen( port, function(){
  
 var listen = require('socket.io');
 var io = listen(server);
-io.on('connection', function(socket){ 
-    console.log('socket connection on!');
-    // socket.on('client message', function(data){
-    //     io.emit('server message', data.message);
-    // });
-    socket.on('client message', function(data){
-        console.log(data);
-        io.emit('server message', data.message);
-    });
-});
+require('./libs/socketConnection')(io);
 
 
 // 8443번에 https적용 -------------
