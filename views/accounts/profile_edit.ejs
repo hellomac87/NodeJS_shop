@@ -1,0 +1,33 @@
+<% include ../header.ejs %>
+
+<form action="" method="post">
+<div class="panel panel-primary">
+    <div class="panel-heading">
+    username
+    </div>
+    <div class="panel-body">
+    <input type="text" name='username' value="<%= user.username %>">
+    </div>
+</div>
+
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        passowrd
+    </div>
+    <div class="panel-body">
+        <input type="text" name="password" value="<%= user.password %>">
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+    displayname
+    </div>
+    <div class="panel-body">
+        <input type="text" name="displayname" value="<%= user.displayname %>">
+    </div>
+</div>
+</form>
+<button class='btn btn-primary'>제출하기</button>
+
+<% include ../footer.ejs %>

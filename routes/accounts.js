@@ -94,7 +94,11 @@ router.get('/logout', function(req, res){
 router.get('/profile', loginRequired, function(req, res){
     
     res.render('accounts/profile', {user:req.user});
-    
+
+});
+//my profile edit
+router.get('/profile/edit', function(req, res){
+    res.render('accounts/profile_edit', {user:req.user});
 });
 
 module.exports = router;
