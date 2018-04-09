@@ -5,6 +5,8 @@ var CommentsModel = require('../models/CommentsModel');
 
 var loginRequired = require('../libs/loginRequired');
 
+var co = require('co');
+
 // csrf 셋팅
 var csrf = require('csurf');
 var csrfProtection = csrf({ cookie: true });
@@ -73,7 +75,7 @@ router.post('/products/write', loginRequired, upload.single('thumbnail'), csrfPr
         res.send(product.validateSync());
     }
 });
-
+/*
 router.get('/products/detail/:id', function(req, res){
     //url 에서 변수 값을 받아올떈 req.params.id 로 받아온다
     ProductsModel.findOne({'id':req.params.id}, function(err, product){
@@ -81,6 +83,17 @@ router.get('/products/detail/:id', function(req, res){
             res.render('admin/productsDetail', { product: product , comments : comments });
         });
     });
+});
+*/
+router.get('/products/detail/:id' , function(req, res){
+    var getData = async() => ({
+            product: await ProductsModel.findOne({'id': req.params.id}).exec(),
+            comments: await CommentsModel.find({'product_id':req.params.id}).exec() 
+    });
+
+    getData().then(function(result){
+        res.render('admin/productsDetail', { product: result.product , comments : result.comments });
+    }) 
 });
 
 //edit
