@@ -47,6 +47,17 @@
 <script>
 (function(){
     var socket = io();
+
+    function updateUserList(userList){
+        $("#userList").html("");
+        for(var key in userList){
+            $("#userList").append('<li>' + userList[key]+ '</li>')
+        }
+    }
+
+    socket.on('join', function(data){
+        updateUserList(data);
+    });
  
     socket.on('server message', function(data){
         $('#chatBody').append('<li><strong>'+ data.displayname +'</strong>' + data.message + '</li>');
@@ -59,6 +70,10 @@
             $massage.val('');
             return false;
         });
+    });
+
+    socket.on('leave', function(data){
+        updateUserList(data);
     });
  
 })();
