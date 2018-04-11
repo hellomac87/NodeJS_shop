@@ -152,4 +152,9 @@ router.post('/products/ajax_comment/delete', function(req, res){
     });
 });
 
+//summernote 이미지 업로드 라우팅 구현
+router.post('/products/ajax_summernote', loginRequired, upload.single('thumbnail'), function(req,res){
+    res.send( '/uploads/' + req.file.filename);
+});
+
 module.exports = router;
