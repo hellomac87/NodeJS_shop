@@ -10,6 +10,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!--bootstrap js 추가 -->
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="/static/common.js"></script>
 </head>
 <body>
 
@@ -33,6 +35,7 @@
                         </li>
                         <li><a href="/admin/products">ADMIN</a></li>
                         <li><a href="/chat">CHAT</a></li>
+                        <li><a href="/cart">CART</a></li>
                         <% if(isLogin){%>
                             <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
                         <%}else{%>

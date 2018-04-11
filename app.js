@@ -31,6 +31,8 @@ var accounts = require('./routes/accounts');
 var auth = require('./routes/auth');
 var github = require('./routes/github');
 var chat = require('./routes/chat');
+var products = require('./routes/products');
+var cart = require('./routes/cart');
 
 var app = express();
 var port = 3000;
@@ -47,6 +49,8 @@ app.use(cookieParser());
 
 //업로드 path 추가(static path add)
 app.use('/uploads', express.static('uploads'));
+//static path 추가(static path add)
+app.use('/static', express.static('static'));
 
 //session 관련 셋팅
 var connectMongo = require('connect-mongo');
@@ -92,6 +96,8 @@ app.use('/accounts', accounts);
 app.use('/auth', auth);
 app.use('/github', github);
 app.use('/chat', chat);
+app.use('/products', products);
+app.use('/cart', cart);
 
 
 var server = app.listen( port, function(){
