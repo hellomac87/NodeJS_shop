@@ -7,6 +7,8 @@ var loginRequired = require('../libs/loginRequired');
 
 var co = require('co');
 
+var paginate = require('express-paginate');
+
 // csrf 셋팅
 var csrf = require('csurf');
 var csrfProtection = csrf({ cookie: true });
@@ -45,14 +47,27 @@ router.get('/products', testMiddleWare, adminCheck,function(req, res){
 });
 */
 router.get('/', function(req, res){
-    res.send('path : admin');
+    res.redirect('/products');
 });
 
-router.get('/products',function(req, res){
-    ProductsModel.find(function(err, products){
-        res.render('admin/products',{products : products});
+router.get('/products', paginate.middleware(3, 50), async (req,res) => {
+ 
+    const [ results, itemCount ] = await Promise.all([
+        ProductsModel.find().sort('-created_at').limit(req.query.limit).skip(req.skip).exec(),
+        ProductsModel.count({})
+    ]);
+    const pageCount = Math.ceil(itemCount / req.query.limit);
+    
+    const pages = paginate.getArrayPages(req)( 4 , pageCount, req.query.page);
+ 
+    res.render('admin/products', { 
+        products : results , 
+        pages: pages,
+        pageCount : pageCount,
     });
+ 
 });
+
 router.get('/products/write', loginRequired, csrfProtection, function(req, res){
     res.render('admin/form',{ product : "", csrfToken : req.csrfToken()});
 });
