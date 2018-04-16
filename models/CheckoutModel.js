@@ -25,5 +25,20 @@ var CheckoutSchema = new Schema({
     }
 });
 
+CheckoutSchema.virtual('getDate').get(function(){
+    var date = new Date(this.created_at);
+    return {
+        year : date.getFullYear(),
+        month : date.getMonth()+1,
+        day : date.getDate()
+    };
+});
+
+CheckoutSchema.virtual('getAmountFormat').get(function(){
+    // 1000원을 1,000원으로 바꿔준다.
+    return new Intl.NumberFormat().format(this.paid_amount);
+});
+
+
 CheckoutSchema.plugin( autoIncrement.plugin , { model: "checkout", field : "id", startAt : 1 });
 module.exports = mongoose.model( "checkout", CheckoutSchema);

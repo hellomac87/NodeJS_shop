@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var ProductsModel = require('../models/ProductsModel');
 var CommentsModel = require('../models/CommentsModel');
+var CheckoutModel = require('../models/CheckoutModel');
 
 var loginRequired = require('../libs/loginRequired');
 
@@ -170,6 +171,22 @@ router.post('/products/ajax_comment/delete', function(req, res){
 //summernote 이미지 업로드 라우팅 구현
 router.post('/products/ajax_summernote', loginRequired, upload.single('thumbnail'), function(req,res){
     res.send( '/uploads/' + req.file.filename);
+});
+
+//GET /admin/checkout 페이지 작성
+router.get('/order', (req, res) => {
+    CheckoutModel.find(function(err, orderList){
+        res.render('admin/orderList', {orderList:orderList});
+    })
+});
+
+//GET /admin/order/edit/:id 페이지 작성
+router.get('/order/edit/:id', (req, res) =>{
+    CheckoutModel.findOne( { id : req.params.id } , function(err, order){
+        res.render( 'admin/orderForm' , 
+            { order : order }
+        );
+    });
 });
 
 module.exports = router;

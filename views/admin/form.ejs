@@ -1,5 +1,7 @@
 <% include ../header.ejs %>
-    <form action="" method="post" enctype="multipart/form-data" id="editForm">
+    <% include ./sidebar.ejs %>
+    <div class="col-sm-10">
+        <form action="" method="post" enctype="multipart/form-data" id="editForm">
      <input type="hidden" name="_csrf" value="<%=csrfToken%>" />
         <table class="table table-bordered">
             <tr>
@@ -29,6 +31,8 @@
         </table>
         <button class="btn btn-primary">작성하기</button>
     </form>
+    </div>
+    
 
 <!-- 스타일관련 -->
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
