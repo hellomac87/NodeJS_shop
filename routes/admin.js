@@ -4,7 +4,8 @@ var ProductsModel = require('../models/ProductsModel');
 var CommentsModel = require('../models/CommentsModel');
 var CheckoutModel = require('../models/CheckoutModel');
 
-var loginRequired = require('../libs/loginRequired');
+//var loginRequired = require('../libs/loginRequired'); //adminRequired로 대체
+var adminRequired = require('../libs/adminRequired');
 
 var co = require('co');
 
@@ -51,7 +52,7 @@ router.get('/', function(req, res){
     res.redirect('/products');
 });
 
-router.get('/products', paginate.middleware(3, 50), async (req,res) => {
+router.get('/products', adminRequired, paginate.middleware(10, 50), async (req,res) => {
  
     const [ results, itemCount ] = await Promise.all([
         ProductsModel.find().sort('-created_at').limit(req.query.limit).skip(req.skip).exec(),
@@ -59,7 +60,7 @@ router.get('/products', paginate.middleware(3, 50), async (req,res) => {
     ]);
     const pageCount = Math.ceil(itemCount / req.query.limit);
     
-    const pages = paginate.getArrayPages(req)( 4 , pageCount, req.query.page);
+    const pages = paginate.getArrayPages(req)( 5 , pageCount, req.query.page);
  
     res.render('admin/products', { 
         products : results , 
@@ -69,10 +70,10 @@ router.get('/products', paginate.middleware(3, 50), async (req,res) => {
  
 });
 
-router.get('/products/write', loginRequired, csrfProtection, function(req, res){
+router.get('/products/write', adminRequired, csrfProtection, function(req, res){
     res.render('admin/form',{ product : "", csrfToken : req.csrfToken()});
 });
-router.post('/products/write', loginRequired, upload.single('thumbnail'), csrfProtection, function(req, res){
+router.post('/products/write', adminRequired, upload.single('thumbnail'), csrfProtection, function(req, res){
     //console.log(req.file);
     var product = new ProductsModel({
         name : req.body.name,
@@ -113,12 +114,12 @@ router.get('/products/detail/:id' , function(req, res){
 });
 
 //edit
-router.get('/products/edit/:id', loginRequired, csrfProtection , function(req, res){
+router.get('/products/edit/:id', adminRequired, csrfProtection , function(req, res){
     ProductsModel.findOne({'id':req.params.id}, function(err, product){
         res.render('admin/form', { product : product, csrfToken : req.csrfToken()});
     });
 });
-router.post('/products/edit/:id', loginRequired, upload.single('thumbnail'), csrfProtection, function(req, res){
+router.post('/products/edit/:id', adminRequired, upload.single('thumbnail'), csrfProtection, function(req, res){
     //그전에 지정되 있는 파일명을 받아온다
     ProductsModel.findOne( {id : req.params.id} , function(err, product){
 
@@ -169,7 +170,7 @@ router.post('/products/ajax_comment/delete', function(req, res){
 });
 
 //summernote 이미지 업로드 라우팅 구현
-router.post('/products/ajax_summernote', loginRequired, upload.single('thumbnail'), function(req,res){
+router.post('/products/ajax_summernote', adminRequired, upload.single('thumbnail'), function(req,res){
     res.send( '/uploads/' + req.file.filename);
 });
 

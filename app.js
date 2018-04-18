@@ -85,13 +85,14 @@ app.use(function(req, res, next) {
     app.locals.isLogin = req.isAuthenticated(); // isAuthenticated : passport 에서 제공하는 메서드
     //app.locals.urlparameter = req.url; //현재 url 정보를 보내고 싶으면 이와같이 셋팅
     //app.locals.userData = req.user; //사용 정보를 보내고 싶으면 이와같이 셋팅
+    app.locals.userData = req.user;
     next();
 });
 
 
 //Router use
 app.use('/', home);
-app.use('/admin', admin); //middleware
+app.use('/admin', admin); //middleware //여기다가 adminRequired를 걸면 해당 라우터 싹다 적용 가능
 app.use('/contacts', contacts);
 app.use('/accounts', accounts);
 app.use('/auth', auth);
