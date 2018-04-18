@@ -190,4 +190,36 @@ router.get('/order/edit/:id', (req, res) =>{
     });
 });
 
+// chart
+router.get('/statistics', adminRequired, (req, res) => {
+    CheckoutModel.find(function(err, orderList){
+
+        var barData = []; // 넘겨줄 막대그래프 데이터 초기값 선언
+        var pieData = []; // 넘겨줄 파이그래프 데이터 초기값 선언
+
+        orderList.forEach(function(order){
+            // 04-10 형식으로 날짜를 받아온다
+            var date = new Date(order.created_at);
+            var monthDay = (date.getMonth()+1) + '-' + date.getDate();
+
+            //날짜에 해당하는 키값으로 조회
+            if(monthDay in barData){
+                barData[monthDay]++; //키값이 있으면 1씩 더한다.
+            }else{
+                barData[monthDay] = 1; // 키값이 없으면 초기값으로 1을 넣어준다.
+            }
+
+            // 결재 상태를 검색해서 조회
+            if(order.status in pieData){
+                pieData[order.status]++; // 키값이 있으면 1씩 더한다
+            }else{
+                pieData[order.status] = 1; // 없으면 결재상태 +1
+            }
+        });
+
+        res.render('admin/statistics' , { barData : barData , pieData:pieData });
+    });
+});
+
+
 module.exports = router;
