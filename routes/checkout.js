@@ -98,4 +98,17 @@ router.get('/success', function(req,res){
     res.render('checkout/success');
 });
 
+// 구매이력 조회 get
+router.get('/nomember', (req, res) => {
+    res.render('checkout/nomember');
+});
+
+// 검색결과 화면 작성
+router.get('/nomember/search', (req, res) => {
+    CheckoutModel.find({ buyer_email : req.query.email }, function(err, checkoutList){
+        res.render('checkout/search', { checkoutList : checkoutList } );
+    });
+});
+
+
 module.exports = router;
